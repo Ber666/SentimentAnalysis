@@ -28,6 +28,7 @@ class RNN(nn.Module):
         packed_embedded = nn.utils.rnn.pack_padded_sequence(embedded, text_lengths, enforce_sorted=False)
         packed_output, (hidden, cell) = self.rnn(packed_embedded)
         output, output_lengths = nn.utils.rnn.pad_packed_sequence(packed_output)
+        # average
         aver = output.cuda().sum(dim=0)/output_lengths.cuda().view(batch, 1) # batch, 512 / batch
         res = self.fc(aver)
         '''
